@@ -9,7 +9,7 @@
     <name>SRIReader Mobile 1.0 (Beta)</name>
 
     <description>
-        SRIReader Mobile 1.0 is a Single Page Application / Mobile Application, made in HTML5, JS & CSS3; that can read Ecuadorian IRS XML documents that meet the specifications. This application allows users to view the data of this files in a friendly way.
+		<![CDATA["SRIReader Mobile 1.0 is a Single Page Application / Mobile Application, made in HTML5, JS & CSS3; that can read Ecuadorian IRS XML documents that meet the specifications. This application allows users to view the data of this files in a friendly way."]]>
     </description>
 
     <author href="https://www.facebook.com/bbabici" email="kingbogdan84@yahoo.com">
