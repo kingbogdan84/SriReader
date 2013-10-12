@@ -1,0 +1,818 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>SRIReader Mobile 1.0 - Lector de Documentos XML Autorizados por el SRI</title>
+  <meta name="description" content="SRIReader Mobile, es un programa que permite abrir archivos XML referentes a Comprobantes Contables autorizados por el SRI para su uso en Transacciones Comerciales en Ecuador, y visualizar su contenido." />
+
+  <link rel="icon" type="image/png" href="Images/fav-icon.png" />
+
+  <!-- Styles -->
+  <link href="Content/jquery.mobile-1.3.1.css" rel="stylesheet" type="text/css" />
+  <link href="Content/themes/redmond/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" />
+  <link href="Content/Site.css" rel="stylesheet" type="text/css" />
+     
+</head>
+<body>
+<!-- Home -->
+<div data-role="page" id="page1">
+
+    <!-- Acerca de -->
+    <div id="panel-acerca" data-role="panel" data-display="overlay" data-position="left" data-theme="a">
+        <h2>Acerca de<br />SRIReader Mobile 1.0</h2>
+
+        <p>SRIReader Mobile, es una aplicación móvil que permite abrir archivos XML referentes a Comprobantes Contables autorizados por el SRI para su uso en Transacciones Comerciales en Ecuador, y visualizar su contenido.</p>
+        <p>Los Documentos que el programa puede mostrar son:</p>
+        <ul>
+            <li>Facturas</li>
+            <li>Retenciones</li>
+            <li>Notas de Crédito</li>
+            <li>Notas de Débito</li>
+            <li>Guías de Remisión</li>
+        </ul>
+
+        <a href="javascript:void(0);" data-role="button" data-rel="close" data-icon="close">Cerrar</a>
+    </div>
+
+    <div data-theme="a" data-role="header">
+        <h1>
+            SRIReader Mobile
+        </h1>
+        <p class="subtitulo">Lector de Documentos XML Autorizados por el SRI</p>
+    </div>
+    <div data-role="content">
+
+        <div id="subirArchivo" class="hidden">
+            <input type="file" id="xmlFile" name="xmlFile" />
+        </div>
+		
+        <!-- Inicio -->
+        <div id="inicio" class="centrado">
+            <div id="logo" class="centrado">
+                <img src="Images/scanner.png" alt="SRIReader" title="SRIReader" />
+                <h2>SRIReader Mobile</h2>
+                <h5>Visualice sus Comprobantes Contables del SRI</h5>
+            </div>
+
+            <div id="logos-documentos">
+                <table>
+                    <tr>
+                        <td>
+                            <img src="Images/facturaIco.png" alt="Facturas" title="Facturas" />
+                            <strong>Facturas</strong>
+                        </td>
+                        <td>
+                            <img src="Images/Retencion.png" alt="Retenciones" title="Retenciones" />
+                            <strong>Retenciones</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="Images/NC.png" alt="Notas de Crédito" title="Notas de Crédito" />
+                            <strong>Notas de Crédito</strong>
+                        </td>
+                        <td>
+                            <img src="Images/ND.png" alt="Notas de Débito" title="Notas de Débito" />
+                            <strong>Notas de Débito</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <img src="Images/Guia.png" alt="Guías de Remisión" title="Guías de Remisión" />
+                            <strong>Guías de Remisión</strong>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Facturas -->
+        <div id="factura-container" class="documento-container" data-bind="visible: EsFactura">
+            
+            <div class="campos">
+                <h2>Factura No. <span data-bind="text: DocFactura.InformacionTributaria.NumeroDocumento"></span></h2>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-factura">
+                <div data-role="collapsible" id="factura-cabecera" data-theme="a" data-collapsed="false">
+                    <h3>Emisor</h3>
+                
+                    <div class="campos">
+                        <h3 data-bind="text: DocFactura.InformacionTributaria.RazonSocial"></h3>
+                        <h4><strong>RUC:</strong> <span data-bind="text: DocFactura.InformacionTributaria.Ruc"></span></h4>
+                        <h4><strong>Dirección Matriz:</strong> <span data-bind="text: DocFactura.InformacionTributaria.DireccionMatriz"></span></h4>
+                        <h4><strong>Dirección Sucursal:</strong> <span data-bind="text: DocFactura.InformacionFactura.DireccionEstablecimiento"></span></h4>
+                        <h4><strong>Contribuyente Especial No.:</strong> <span data-bind="text: DocFactura.InformacionFactura.NumeroContribuyenteEspecial"></span></h4>
+                        <h4><strong>Obligado a llevar Contabilidad:</strong> <span data-bind="text: DocFactura.InformacionFactura.ObligadoContabilidad"></span></h4>
+                    </div>
+
+                    <div class="campos">
+                        <h4><strong>No. de Autorización:</strong> <span data-bind="text: DocAutorizacion.NumeroAutorizacion"></span></h4>
+                        <h4><strong>Fecha de Autorización:</strong> <span data-bind="text: DocAutorizacion.FechaAutorizacionTexto"></span></h4>
+                        <h4><strong>Ambiente:</strong> <span data-bind="text: DocFactura.InformacionTributaria.DescripcionAmbiente"></span></h4>
+                        <h4><strong>Emisión:</strong> <span data-bind="text: DocFactura.InformacionTributaria.DescripcionTipoEmision"></span></h4>
+                        <h4><strong>Clave de Acceso:</strong><br /><span data-bind="text: DocFactura.InformacionTributaria.ClaveAcceso"></span></h4>
+                    </div>
+
+                </div>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-factura-cliente">
+                <div data-role="collapsible" id="factura-cliente" data-theme="a" data-collapsed="false">
+                    <h3>Cliente</h3>
+
+                    <div class="campos">
+                        <h3 data-bind="text: DocFactura.InformacionFactura.RazonSocialCliente"></h3>
+                        <h4><strong>R.U.C.:</strong> <span data-bind="text: DocFactura.InformacionFactura.RucCliente"></span></h4>
+                        <h4><strong>Fecha de Emisión:</strong> <span data-bind="text: DocFactura.InformacionFactura.FechaEmisionTexto"></span></h4>
+                        <h4><strong>Guía de Remisión:</strong> <span data-bind="text: DocFactura.InformacionFactura.GuiaRemision"></span></h4>
+                    </div>
+
+                </div>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-factura-productos">
+                <div data-role="collapsible" id="factura-productos" data-theme="a" data-collapsed="false">
+                    <h3>Productos</h3>
+
+                    <table data-role="table" data-mode="reflow" class="ui-responsive" id="productos-factura">
+                        <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Cantidad</th>
+                                <th>Descripción</th>
+                                <th>Precio</th>
+                                <th>Dscto.</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <!--<tbody data-bind="foreach: DocFactura.Productos">
+                            <tr>
+                                <td><b class="ui-table-cell-label">Codigo: </b><span data-bind="text: CodigoPrincipal"></span></td>
+                                <td><b class="ui-table-cell-label">Cantidad: </b><span data-bind="text: Cantidad"></span></td>
+                                <td><b class="ui-table-cell-label">Descripción: </b><span data-bind="text: Descripcion"></span></td>
+                                <td><b class="ui-table-cell-label">P.V.P.</b><span data-bind="text: PrecioUnitario"></span></td>
+                                <td><b class="ui-table-cell-label">Dscto.:</b><span data-bind="text: Descuento"></span></td>
+                                <td><b class="ui-table-cell-label">Subtotal: </b><span data-bind="text: SubtotalSinImpuestos"></span></td>
+                            </tr>
+                        </tbody>-->
+                    </table>
+
+                    <div class="campos subtotales">
+                        <h4><strong>Subtotal 12%:</strong> <span data-bind="text: DocFactura.InformacionFactura.TotalBaseIVA12"></span></h4>
+                        <h4><strong>Subtotal 0%:</strong> <span data-bind="text: DocFactura.InformacionFactura.TotalBaseIVA0"></span></h4>
+                        <h4><strong>Subtotal Sin Impuestos:</strong> <span data-bind="text: DocFactura.InformacionFactura.TotalSinImpuestos"></span></h4>
+                        <h4><strong>Descuento:</strong> <span data-bind="text: DocFactura.InformacionFactura.TotalDescuento"></span></h4>
+                        <h4><strong>ICE:</strong> <span data-bind="text: DocFactura.InformacionFactura.TotalICE"></span></h4>
+                        <h4><strong>IVA 12%:</strong> <span data-bind="text: DocFactura.InformacionFactura.TotalIVA12"></span></h4>
+                        <h4><strong>Propina:</strong> <span data-bind="text: DocFactura.InformacionFactura.Propina"></span></h4>
+                        <h4><strong>Valor Total:</strong> <span data-bind="text: DocFactura.InformacionFactura.ImporteTotal"></span></h4>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Guía de Remisión -->
+        <div id="guiaremision-container" class="documento-container" data-bind="visible: EsGuiaRemision">
+            <div class="campos">
+                <h2>Guia de Remisión No. <span data-bind="text: DocGuiaRemision.InformacionTributaria.NumeroDocumento"></span></h2>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-guia">
+                <div data-role="collapsible" id="guia-cabecera" data-theme="a" data-collapsed="false">
+                    <h3>Emisor</h3>
+                
+                    <div class="campos">
+                        <h3 data-bind="text: DocGuiaRemision.InformacionTributaria.RazonSocial"></h3>
+                        <h4><strong>RUC:</strong> <span data-bind="text: DocGuiaRemision.InformacionTributaria.Ruc"></span></h4>
+                        <h4><strong>Dirección Matriz:</strong> <span data-bind="text: DocGuiaRemision.InformacionTributaria.DireccionMatriz"></span></h4>
+                        <h4><strong>Dirección Sucursal:</strong> <span data-bind="text: DocGuiaRemision.InformacionGuiaRemision.DireccionEstablecimiento"></span></h4>
+                        <h4><strong>Contribuyente Especial No.:</strong> <span data-bind="text: DocGuiaRemision.InformacionGuiaRemision.NumeroContribuyenteEspecial"></span></h4>
+                        <h4><strong>Obligado a llevar Contabilidad:</strong> <span data-bind="text: DocGuiaRemision.InformacionGuiaRemision.ObligadoContabilidad"></span></h4>
+                    </div>
+
+                    <div class="campos">
+                        <h4><strong>No. de Autorización:</strong> <span data-bind="text: DocAutorizacion.NumeroAutorizacion"></span></h4>
+                        <h4><strong>Fecha de Autorización:</strong> <span data-bind="text: DocAutorizacion.FechaAutorizacionTexto"></span></h4>
+                        <h4><strong>Ambiente:</strong> <span data-bind="text: DocFactura.InformacionTributaria.DescripcionAmbiente"></span></h4>
+                        <h4><strong>Emisión:</strong> <span data-bind="text: DocFactura.InformacionTributaria.DescripcionTipoEmision"></span></h4>
+                        <h4><strong>Clave de Acceso:</strong><br /><span data-bind="text: DocFactura.InformacionTributaria.ClaveAcceso"></span></h4>
+                    </div>
+
+                </div>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-guia-transportista">
+                <div data-role="collapsible" id="guia-transportista" data-theme="a" data-collapsed="false">
+                    <h3>Transportista</h3>
+
+                    <div class="campos">
+                        <h3 data-bind="text: DocGuiaRemision.InformacionGuiaRemision.RazonSocialTransportista"></h3>
+                        <h4><strong>R.U.C.:</strong> <span data-bind="text: DocGuiaRemision.InformacionGuiaRemision.RucTransportista"></span></h4>
+                        <h4><strong>R.I.S.E.:</strong> <span data-bind="text: DocGuiaRemision.InformacionGuiaRemision.Rise"></span></h4>
+                        <h4><strong>Placa:</strong> <span data-bind="text: DocGuiaRemision.InformacionGuiaRemision.Placa"></span></h4>
+                        <h4><strong>Fecha Inicio de Transporte:</strong> <span data-bind="text: DocGuiaRemision.InformacionGuiaRemision.FechaInicioTransporteTexto"></span></h4>
+                        <h4><strong>Fecha Fin de Transporte:</strong> <span data-bind="text: DocGuiaRemision.InformacionGuiaRemision.FechaFinalTransporteTexto"></span></h4>
+                        <h4><strong>Punto de Partida:</strong> <span data-bind="text: DocGuiaRemision.InformacionGuiaRemision.DireccionPartida"></span></h4>
+                    </div>
+
+                </div>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-guia-destinatarios">
+                <div data-role="collapsible" id="guia-destinatarios" data-theme="a" data-collapsed="false">
+                    <h3>Destinatarios</h3>
+
+                    <ul id="guia-destinatarios-lista" data-role="listview" data-theme="e">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notas de Crédito -->
+        <div id="notacredito-container" class="documento-container" data-bind="visible: EsNotaCredito">
+            <div class="campos">
+                <h2>Nota de Crédito No. <span data-bind="text: DocNotaCredito.InformacionTributaria.NumeroDocumento"></span></h2>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-nc">
+                <div data-role="collapsible" id="nc-cabecera" data-theme="a" data-collapsed="false">
+                    <h3>Emisor</h3>
+                
+                    <div class="campos">
+                        <h3 data-bind="text: DocNotaCredito.InformacionTributaria.RazonSocial"></h3>
+                        <h4><strong>RUC:</strong> <span data-bind="text: DocNotaCredito.InformacionTributaria.Ruc"></span></h4>
+                        <h4><strong>Dirección Matriz:</strong> <span data-bind="text: DocNotaCredito.InformacionTributaria.DireccionMatriz"></span></h4>
+                        <h4><strong>Dirección Sucursal:</strong> <span data-bind="text: DocNotaCredito.InformacionNotaCredito.DireccionEstablecimiento"></span></h4>
+                        <h4><strong>Contribuyente Especial No.:</strong> <span data-bind="text: DocNotaCredito.InformacionNotaCredito.NumeroContribuyenteEspecial"></span></h4>
+                        <h4><strong>Obligado a llevar Contabilidad:</strong> <span data-bind="text: DocNotaCredito.InformacionNotaCredito.ObligadoContabilidad"></span></h4>
+                    </div>
+
+                    <div class="campos">
+                        <h4><strong>No. de Autorización:</strong> <span data-bind="text: DocAutorizacion.NumeroAutorizacion"></span></h4>
+                        <h4><strong>Fecha de Autorización:</strong> <span data-bind="text: DocAutorizacion.FechaAutorizacionTexto"></span></h4>
+                        <h4><strong>Ambiente:</strong> <span data-bind="text: DocNotaCredito.InformacionTributaria.DescripcionAmbiente"></span></h4>
+                        <h4><strong>Emisión:</strong> <span data-bind="text: DocNotaCredito.InformacionTributaria.DescripcionTipoEmision"></span></h4>
+                        <h4><strong>Clave de Acceso:</strong><br /><span data-bind="text: DocNotaCredito.InformacionTributaria.ClaveAcceso"></span></h4>
+                    </div>
+
+                </div>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-nc-cliente">
+                <div data-role="collapsible" id="nc-cliente" data-theme="a" data-collapsed="false">
+                    <h3>Cliente</h3>
+
+                    <div class="campos">
+                        <h3 data-bind="text: DocNotaCredito.InformacionNotaCredito.RazonSocialCliente"></h3>
+                        <h4><strong>R.U.C.:</strong> <span data-bind="text: DocNotaCredito.InformacionNotaCredito.RucCliente"></span></h4>
+                        <h4><strong>R.I.S.E.:</strong> <span data-bind="text: DocNotaCredito.InformacionNotaCredito.Rise"></span></h4>
+                        <h4><strong>Fecha de Emisión:</strong> <span data-bind="text: DocNotaCredito.InformacionNotaCredito.FechaEmisionTexto"></span></h4>
+                    </div>
+
+                </div>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-nc-documento">
+                <div data-role="collapsible" id="nc-documento" data-theme="a" data-collapsed="false">
+                    <h3>Comprobante de Sustento</h3>
+
+                    <div class="campos">
+                        <h3 data-bind="text: DocNotaCredito.InformacionNotaCredito.NombreDocumentoModificado"></h3>
+                        <h4><strong>Número:</strong> <span data-bind="text: DocNotaCredito.InformacionNotaCredito.NumeroDocumentoModificado"></span></h4>
+                        <h4><strong>Fecha Emisión:</strong> <span data-bind="text: DocNotaCredito.InformacionNotaCredito.FechaEmisionDocumentoSustentoTexto"></span></h4>
+                        <h4><strong>Motivo:</strong> <span data-bind="text: DocNotaCredito.Motivo"></span></h4>
+                    </div>
+
+                </div>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-nc-productos">
+                <div data-role="collapsible" id="nc-productos" data-theme="a" data-collapsed="false">
+                    <h3>Productos</h3>
+
+                    <table data-role="table" data-mode="reflow" class="ui-responsive" id="productos-nc">
+                        <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Cantidad</th>
+                                <th>Descripción</th>
+                                <th>Precio</th>
+                                <th>Dscto.</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    <div class="campos subtotales">
+                        <h4><strong>Subtotal 12%:</strong> <span data-bind="text: DocNotaCredito.InformacionNotaCredito.TotalBaseIVA12"></span></h4>
+                        <h4><strong>Subtotal 0%:</strong> <span data-bind="text: DocNotaCredito.InformacionNotaCredito.TotalBaseIVA0"></span></h4>
+                        <h4><strong>Subtotal Sin Impuestos:</strong> <span data-bind="text: DocNotaCredito.InformacionNotaCredito.TotalSinImpuestos"></span></h4>
+                        <h4><strong>ICE:</strong> <span data-bind="text: DocNotaCredito.InformacionNotaCredito.TotalICE"></span></h4>
+                        <h4><strong>IVA 12%:</strong> <span data-bind="text: DocNotaCredito.InformacionNotaCredito.TotalIVA12"></span></h4>
+                        <h4><strong>Valor Total:</strong> <span data-bind="text: DocNotaCredito.InformacionNotaCredito.TotalModificado"></span></h4>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Notas de Débito -->
+        <div id="notadebito-container" class="documento-container" data-bind="visible: EsNotaDebito">
+
+            <div class="campos">
+                <h2>Nota de Débito No. <span data-bind="text: DocNotaDebito.InformacionTributaria.NumeroDocumento"></span></h2>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-nd">
+                <div data-role="collapsible" id="nd-cabecera" data-theme="a" data-collapsed="false">
+                    <h3>Emisor</h3>
+                
+                    <div class="campos">
+                        <h3 data-bind="text: DocNotaDebito.InformacionTributaria.RazonSocial"></h3>
+                        <h4><strong>RUC:</strong> <span data-bind="text: DocNotaDebito.InformacionTributaria.Ruc"></span></h4>
+                        <h4><strong>Dirección Matriz:</strong> <span data-bind="text: DocNotaDebito.InformacionTributaria.DireccionMatriz"></span></h4>
+                        <h4><strong>Dirección Sucursal:</strong> <span data-bind="text: DocNotaDebito.InformacionNotaDebito.DireccionEstablecimiento"></span></h4>
+                        <h4><strong>Contribuyente Especial No.:</strong> <span data-bind="text: DocNotaDebito.InformacionNotaDebito.NumeroContribuyenteEspecial"></span></h4>
+                        <h4><strong>Obligado a llevar Contabilidad:</strong> <span data-bind="text: DocNotaDebito.InformacionNotaDebito.ObligadoContabilidad"></span></h4>
+                    </div>
+
+                    <div class="campos">
+                        <h4><strong>No. de Autorización:</strong> <span data-bind="text: DocAutorizacion.NumeroAutorizacion"></span></h4>
+                        <h4><strong>Fecha de Autorización:</strong> <span data-bind="text: DocAutorizacion.FechaAutorizacionTexto"></span></h4>
+                        <h4><strong>Ambiente:</strong> <span data-bind="text: DocNotaDebito.InformacionTributaria.DescripcionAmbiente"></span></h4>
+                        <h4><strong>Emisión:</strong> <span data-bind="text: DocNotaDebito.InformacionTributaria.DescripcionTipoEmision"></span></h4>
+                        <h4><strong>Clave de Acceso:</strong><br /><span data-bind="text: DocNotaDebito.InformacionTributaria.ClaveAcceso"></span></h4>
+                    </div>
+
+                </div>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-nd-cliente">
+                <div data-role="collapsible" id="nd-cliente" data-theme="a" data-collapsed="false">
+                    <h3>Cliente</h3>
+
+                    <div class="campos">
+                        <h3 data-bind="text: DocNotaDebito.InformacionNotaDebito.RazonSocialComprador"></h3>
+                        <h4><strong>R.U.C.:</strong> <span data-bind="text: DocNotaDebito.InformacionNotaDebito.RucComprador"></span></h4>
+                        <h4><strong>R.I.S.E.:</strong> <span data-bind="text: DocNotaDebito.InformacionNotaDebito.Rise"></span></h4>
+                        <h4><strong>Fecha de Emisión:</strong> <span data-bind="text: DocNotaDebito.InformacionNotaDebito.FechaEmisionTexto"></span></h4>
+                    </div>
+
+                </div>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-nd-documento">
+                <div data-role="collapsible" id="nd-documento" data-theme="a" data-collapsed="false">
+                    <h3>Comprobante Modificado</h3>
+
+                    <div class="campos">
+                        <h3 data-bind="text: DocNotaDebito.InformacionNotaDebito.NombreDocumentoModificado"></h3>
+                        <h4><strong>Número:</strong> <span data-bind="text: DocNotaDebito.InformacionNotaDebito.NumeroDocumentoModificado"></span></h4>
+                        <h4><strong>Fecha Emisión:</strong> <span data-bind="text: DocNotaDebito.InformacionNotaDebito.FechaEmisionDocumentoModificadoTexto"></span></h4>
+                    </div>
+
+                </div>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-nd-motivos">
+                <div data-role="collapsible" id="nd-motivos" data-theme="a" data-collapsed="false">
+                    <h3>Motivos de la Modificación</h3>
+
+                    <table data-role="table" data-mode="reflow" class="ui-responsive" id="motivos-nd">
+                        <thead>
+                            <tr>
+                                <th>Razón</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    <div class="campos subtotales">
+                        <h4><strong>Subtotal 12%:</strong> <span data-bind="text: DocNotaDebito.InformacionNotaDebito.TotalBaseIVA12"></span></h4>
+                        <h4><strong>Subtotal 0%:</strong> <span data-bind="text: DocNotaDebito.InformacionNotaDebito.TotalBaseIVA0"></span></h4>
+                        <h4><strong>Subtotal Sin Impuestos:</strong> <span data-bind="text: DocNotaDebito.InformacionNotaDebito.TotalSinImpuestos"></span></h4>
+                        <h4><strong>ICE:</strong> <span data-bind="text: DocNotaDebito.InformacionNotaDebito.TotalICE"></span></h4>
+                        <h4><strong>IVA 12%:</strong> <span data-bind="text: DocNotaDebito.InformacionNotaDebito.TotalIVA12"></span></h4>
+                        <h4><strong>Valor Total:</strong> <span data-bind="text: DocNotaDebito.InformacionNotaDebito.Total"></span></h4>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Retenciones -->
+        <div id="retencion-container" class="documento-container" data-bind="visible: EsRetencion">
+
+            <div class="campos">
+                <h2>Comprobante de Retención No. <span data-bind="text: DocRetencion.InformacionTributaria.NumeroDocumento"></span></h2>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-retencion">
+                <div data-role="collapsible" id="retencion-cabecera" data-theme="a" data-collapsed="false">
+                    <h3>Emisor</h3>
+                
+                    <div class="campos">
+                        <h3 data-bind="text: DocRetencion.InformacionTributaria.RazonSocial"></h3>
+                        <h4><strong>RUC:</strong> <span data-bind="text: DocRetencion.InformacionTributaria.Ruc"></span></h4>
+                        <h4><strong>Dirección Matriz:</strong> <span data-bind="text: DocRetencion.InformacionTributaria.DireccionMatriz"></span></h4>
+                        <h4><strong>Dirección Sucursal:</strong> <span data-bind="text: DocRetencion.InformacionRetencion.DireccionEstablecimiento"></span></h4>
+                        <h4><strong>Contribuyente Especial No.:</strong> <span data-bind="text: DocRetencion.InformacionRetencion.NumeroContribuyenteEspecial"></span></h4>
+                        <h4><strong>Obligado a llevar Contabilidad:</strong> <span data-bind="text: DocRetencion.InformacionRetencion.ObligadoContabilidad"></span></h4>
+                    </div>
+
+                    <div class="campos">
+                        <h4><strong>No. de Autorización:</strong> <span data-bind="text: DocAutorizacion.NumeroAutorizacion"></span></h4>
+                        <h4><strong>Fecha de Autorización:</strong> <span data-bind="text: DocAutorizacion.FechaAutorizacionTexto"></span></h4>
+                        <h4><strong>Ambiente:</strong> <span data-bind="text: DocRetencion.InformacionTributaria.DescripcionAmbiente"></span></h4>
+                        <h4><strong>Emisión:</strong> <span data-bind="text: DocRetencion.InformacionTributaria.DescripcionTipoEmision"></span></h4>
+                        <h4><strong>Clave de Acceso:</strong><br /><span data-bind="text: DocRetencion.InformacionTributaria.ClaveAcceso"></span></h4>
+                    </div>
+
+                </div>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-retencion-cliente">
+                <div data-role="collapsible" id="retencion-cliente" data-theme="a" data-collapsed="false">
+                    <h3>Sujeto Retenido</h3>
+
+                    <div class="campos">
+                        <h3 data-bind="text: DocRetencion.InformacionRetencion.RazonSocialSujetoRetenido"></h3>
+                        <h4><strong>R.U.C.:</strong> <span data-bind="text: DocRetencion.InformacionRetencion.RucSujetoRetenido"></span></h4>
+                        <h4><strong>Fecha de Emisión:</strong> <span data-bind="text: DocRetencion.InformacionRetencion.FechaEmisionTexto"></span></h4>
+                        <h4><strong>Periodo Fiscal:</strong> <span data-bind="text: DocRetencion.InformacionRetencion.PeriodoFiscal"></span></h4>
+                    </div>
+
+                </div>
+            </div>
+
+            <div data-role="collapsible-set" data-content-theme="d" id="set-retencion-impuestos">
+                <div data-role="collapsible" id="retencion-impuestos" data-theme="a" data-collapsed="false">
+                    <h3>Impuestos Retenidos</h3>
+
+                    <table data-role="table" data-mode="reflow" class="ui-responsive" id="impuestos-retencion">
+                        <thead>
+                            <tr>
+                                <th>Comprobante</th>
+                                <th>Número</th>
+                                <th>Fecha Emisión</th>
+                                <th>Base Imponible</th>
+                                <th>Impuesto</th>
+                                <th>Porc. Retención</th>
+                                <th>Valor Retenido</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    <div class="campos subtotales">
+                        <h4><strong>Total Retenido:</strong> <span data-bind="text: DocRetencion.TotalRetenido"></span></h4>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Datos Adicionales del Documento -->
+        <div data-role="collapsible-set" data-content-theme="d" id="set-adicionales" data-bind="visible: TieneCamposAdicionales">
+            <div data-role="collapsible" id="datos-adicionales" data-theme="a" data-collapsed="false">
+                <h3>Detalles Adicionales</h3>
+
+                <table data-role="table" data-mode="reflow" class="ui-responsive" id="detalles-adicionales">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <!--<tbody data-bind="foreach: DocFactura.CamposAdicionales">
+                        <tr>
+                            <td><b class="ui-table-cell-label">Nombre: </b><strong data-bind="text: Nombre"></strong></td>
+                            <td><b class="ui-table-cell-label">Valor: </b><span data-bind="text: Valor"></span></td>
+                        </tr>
+                    </tbody>-->
+                </table>
+            </div>
+        </div>
+
+        <!-- Errores Generales -->
+        <div id="error-container" class="documento-container" data-bind="visible: !EsValido()">
+            <h2>Error en el Procesamiento del Archivo</h2>
+            <p data-bind="text: Mensaje"></p>
+        </div>
+
+        <!-- Errores XSD -->
+        <div id="errores-xsd" class="documento-container" data-bind="visible: TieneErroresValidacion">
+            <h2>Los siguientes errores se han encontrado al validar el archivo</h2>
+            <ul></ul>
+            <!--<ul data-bind="foreach: ErroresValidacion">
+                <li data-bind="text: Message"></li>
+            </ul>-->
+        </div>
+
+    </div>
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <div data-role="navbar">
+		    <ul>
+                <li><a id="btnInicio" href="javascript:void(0);" data-icon="home">Inicio</a></li>
+			    <li><a id="btnAbrir" href="javascript:void(0);" data-icon="search">Abrir XML</a></li>
+			    <li><a id="btnAcerca" href="#panel-acerca" data-icon="info">Acerca de</a></li>
+		    </ul>
+	    </div>
+    </div>
+</div>
+
+<!-- jQuery and jQuery Mobile -->
+<script src="Scripts/jquery-1.9.1.js" type="text/javascript"></script>
+<script src="Scripts/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+<script src="Scripts/jquery.mobile-1.3.1.min.js" type="text/javascript"></script>
+<script src="Scripts/knockout-2.2.1.js" type="text/javascript"></script>
+<script src="Scripts/knockout.mapping.js" type="text/javascript"></script>
+
+<script src="ViewModel/IndexViewModel.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+    var indexVM = new IndexViewModel();
+	
+	$("#xmlFile").change(function(){
+		var uploadElement = document.getElementById("xmlFile");
+		cargarArchivo(uploadElement);
+	});
+	
+	function cargarArchivo(uploadElement) {
+		var file = uploadElement.files[0];
+		if (file) {
+			var formData = new window.FormData();
+			formData.append(file.name, file);
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState === 4) //done
+				{
+					var response = $.parseJSON(xhr.responseText);
+					
+					$("#inicio").hide();
+					indexVM.EsValido = ko.observable(response.EsValido);
+					indexVM.EsFactura = ko.observable(response.EsFactura);
+					indexVM.EsGuiaRemision = ko.observable(response.EsGuiaRemision);
+					indexVM.EsNotaCredito = ko.observable(response.EsNotaCredito);
+					indexVM.EsNotaDebito = ko.observable(response.EsNotaDebito);
+					indexVM.EsRetencion = ko.observable(response.EsRetencion);
+					indexVM.TieneErroresValidacion = ko.observable(response.TieneErroresValidacion);
+					indexVM.TieneCamposAdicionales = ko.observable(response.TieneCamposAdicionales);
+
+					indexVM.Mensaje = ko.observable(response.Mensaje);
+					indexVM.DocAutorizacion = ko.mapping.fromJS(response.DocAutorizacion);
+					indexVM.ErroresValidacion = ko.mapping.fromJS(response.ErroresValidacion);
+					indexVM.CamposAdicionales = ko.mapping.fromJS(response.CamposAdicionales);
+
+					if (response.EsValido && response.EsFactura) {
+						indexVM.DocFactura = ko.mapping.fromJS(response.DocFactura);
+						loadProductosFactura(response.DocFactura.Productos);
+					}
+
+					if (response.EsValido && response.EsGuiaRemision) {
+						indexVM.DocGuiaRemision = ko.mapping.fromJS(response.DocGuiaRemision);
+						loadDestinatariosGuia(response.DocGuiaRemision.Destinatarios);
+					}
+
+					if (response.EsValido && response.EsNotaCredito) {
+						indexVM.DocNotaCredito = ko.mapping.fromJS(response.DocNotaCredito);
+						loadProductosNotaCredito(response.DocNotaCredito.Productos);
+					}
+
+					if (response.EsValido && response.EsNotaDebito) {
+						indexVM.DocNotaDebito = ko.mapping.fromJS(response.DocNotaDebito);
+						loadMotivosNotaDebito(response.DocNotaDebito.Motivos);
+					}
+
+					if (response.EsValido && response.EsRetencion) {
+						indexVM.DocRetencion = ko.mapping.fromJS(response.DocRetencion);
+						loadImpuestosRetencion(response.DocRetencion.Impuestos);
+					}
+
+					if (response.TieneCamposAdicionales) {
+						loadDatosAdicionales(response.CamposAdicionales);
+					}
+
+					if (response.TieneErroresValidacion) {
+						loadErroresXSD(response.ErroresValidacion);
+					}
+					ko.applyBindings(indexVM);
+				}
+			};
+			xhr.open('POST', 'http://localhost:51268/Home/Procesar', true);
+
+			// Listen to the upload progress.
+			//var progressBar = document.querySelector('progress');
+			//xhr.upload.onprogress = function (e) {
+				//if (e.lengthComputable) {
+					//progressBar.value = (e.loaded / e.total) * 100;
+					//progressBar.textContent = progressBar.value; // Fallback for unsupported browsers.
+				//}
+			//};
+
+			xhr.send(formData);
+		}
+	}
+	
+    $(document).ready(function () {
+		
+		$.ajax({
+		  dataType: "json",
+		  crossDomain: true,
+		  url: "http://localhost:51268/Home/CargaInicial",
+		  success: function(data){
+			if (data){
+				indexVM.EsValido = ko.observable(data.EsValido);
+				indexVM.EsFactura = ko.observable(data.EsFactura);
+				indexVM.EsGuiaRemision = ko.observable(data.EsGuiaRemision);
+				indexVM.EsNotaCredito = ko.observable(data.EsNotaCredito);
+				indexVM.EsNotaDebito = ko.observable(data.EsNotaDebito);
+				indexVM.EsRetencion = ko.observable(data.EsRetencion);
+				indexVM.Mensaje = ko.observable(data.Mensaje);
+				indexVM.TieneErroresValidacion = ko.observable(data.TieneErroresValidacion);
+				indexVM.TieneCamposAdicionales = ko.observable(data.TieneCamposAdicionales);
+
+				indexVM.DocFactura = ko.mapping.fromJS(data.DocFactura);
+				indexVM.DocGuiaRemision = ko.mapping.fromJS(data.DocGuiaRemision);
+				indexVM.DocNotaCredito = ko.mapping.fromJS(data.DocNotaCredito);
+				indexVM.DocNotaDebito = ko.mapping.fromJS(data.DocNotaDebito);
+				indexVM.DocRetencion = ko.mapping.fromJS(data.DocRetencion);
+				indexVM.DocAutorizacion = ko.mapping.fromJS(data.DocAutorizacion);
+				indexVM.ErroresValidacion = ko.mapping.fromJS(data.ErroresValidacion);
+				indexVM.CamposAdicionales = ko.mapping.fromJS(data.CamposAdicionales);
+
+				ko.applyBindings(indexVM);
+			}
+		  },
+		  error: function(jqXHR, textStatus, ex) {
+			alert(textStatus + "," + ex + "," + jqXHR.responseText);
+		  }
+		});
+	
+    });
+
+    $("#btnAbrir").click(function () {
+        $("#xmlFile").trigger("click");
+    });
+
+    $("#btnInicio").click(function () {
+        indexVM.EsFactura(false);
+        indexVM.EsGuiaRemision(false);
+        indexVM.EsNotaCredito(false);
+        indexVM.EsNotaDebito(false);
+        indexVM.EsRetencion(false);
+        indexVM.TieneCamposAdicionales(false);
+        indexVM.TieneErroresValidacion(false);
+        indexVM.EsValido(true);
+        $("#inicio").show();
+    });
+
+    function loadDestinatariosGuia(data) {
+        $("#guia-destinatarios-lista li").remove();
+        if (data) {
+            $.each(data, function (index, value) {
+                var fila = '<li>';
+                fila = fila + '<h5 class="ui-li-heading">' + value.RazonSocialDestinatario + '</h5>';
+                fila = fila + '<p class="ui-li-desc">R.U.C.:' + value.IdentificacionDestinatario + '</p>';
+
+                fila = fila + '<ul>';
+                fila = fila + '<li><h4>Informacion Adicional del Destinatario</h4><p>';
+                fila = fila + '<strong>R.U.C.</strong> <span>' + value.IdentificacionDestinatario + '<span><br />';
+                fila = fila + '<strong>Direccion:</strong> <span>' + value.DireccionDestinatario + '<span><br />';
+                fila = fila + '<strong>Motivo de Traslado:</strong> <span>' + value.MotivoTraslado + '<span><br />';
+                fila = fila + '<strong>Ruta:</strong> <span>' + value.Ruta + '<span><br />';
+                fila = fila + '<strong>No. Doc. Sustento:</strong> <span>' + value.NumeroDocumentoSustento + '<span><br />';
+                fila = fila + '<strong>Fecha Emision:</strong> <span>' + value.FechaEmisionDocumentoSustentoTexto + '<span><br />';
+                fila = fila + '</p></li>';
+                fila = fila + '<li data-theme="b" class="centrado"><h5>Productos Transportados</h5></li>';
+                $.each(value.ProductosDestinatario, function (index, prodvalue) {
+                    fila = fila + '<li>';
+                    fila = fila + '<div>';
+                    fila = fila + '<div>' + prodvalue.Descripcion + '</div><br />';
+                    fila = fila + '<p><strong>Cod. Interno:</strong> <span>' + prodvalue.CodigoInterno + '</span></p>';
+                    fila = fila + '<p><strong>Cod. Adicional:</strong> <span>' + prodvalue.CodigoAdicional + '</span></p>';
+                    fila = fila + '<p><strong>Cantidad:</strong> <span>' + prodvalue.Cantidad + '</span></p>';
+                    fila = fila + '</div>';
+                    fila = fila + '</li>';
+                });
+                fila = fila + '</ul>';
+
+                fila = fila + '</li>';
+                $("#guia-destinatarios-lista").append(fila);
+            });
+            $("#guia-destinatarios-lista").listview("refresh");
+        }
+    }
+
+    function loadMotivosNotaDebito(data) {
+        $("#motivos-nd tbody tr").remove();
+        if (data) {
+            $.each(data, function (index, value) {
+                var fila = '<tr>';
+                fila = fila + '<td><b class="ui-table-cell-label">Razón: </b><span>' + value.Razon + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">Valor: </b><span>' + value.Valor + '</span></td>';
+                fila = fila + '</tr>';
+
+                $("#motivos-nd tbody").append(fila);
+            });
+        }
+    }
+
+    function loadImpuestosRetencion(data) {
+        $("#impuestos-retencion tbody tr").remove();
+        if (data) {
+            $.each(data, function (index, value) {
+                var fila = '<tr>';
+                fila = fila + '<td><b class="ui-table-cell-label">Comprobante: </b><span>' + value.DescripcionDocumentoSustento + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">Número: </b><span>' + value.NumeroDocumentoSustento + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">Fecha Emisión: </b><span>' + value.FechaEmisionDocumentoSustentoTexto + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">Base Imponible: </b><span>' + value.BaseImponible + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">Impuesto: </b><span>' + value.DescripcionImpuestoAplicado + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">Porc. Retención: </b><span>' + value.PorcentajeRetencion + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">Valor Retenido: </b><span>' + value.ValorRetenido + '</span></td>';
+                fila = fila + '</tr>';
+
+                $("#impuestos-retencion tbody").append(fila);
+            });
+        }
+    }
+
+    function loadProductosFactura(data) {
+        $("#factura-productos tbody tr").remove();
+        if (data) {
+            $.each(data, function (index, value) {
+                var fila = '<tr>';
+                fila = fila + '<td><b class="ui-table-cell-label">Codigo: </b><span>' + value.CodigoPrincipal + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">Cantidad: </b><span>' + value.Cantidad + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">Descripción: </b><span>' + value.Descripcion + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">P.V.P.</b><span>' + value.PrecioUnitario + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">Dscto.:</b><span>' + value.Descuento + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">Subtotal: </b><span>' + value.SubtotalSinImpuestos + '</span></td>';
+                fila = fila + '</tr>';
+
+                $("#factura-productos tbody").append(fila);
+            });
+        }
+    }
+
+    function loadProductosNotaCredito(data) {
+        $("#productos-nc tbody tr").remove();
+        if (data) {
+            $.each(data, function (index, value) {
+                var fila = '<tr>';
+                fila = fila + '<td><b class="ui-table-cell-label">Codigo: </b><span>' + value.CodigoPrincipal + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">Cantidad: </b><span>' + value.Cantidad + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">Descripción: </b><span>' + value.Descripcion + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">P.V.P.</b><span>' + value.PrecioUnitario + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">Dscto.:</b><span>' + value.Descuento + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">Subtotal: </b><span>' + value.SubtotalSinImpuestos + '</span></td>';
+                fila = fila + '</tr>';
+
+                $("#productos-nc tbody").append(fila);
+            });
+        }
+    }
+
+    function loadDatosAdicionales(data) {
+        $("#detalles-adicionales tbody tr").remove();
+        if (data) {
+            $.each(data, function (index, value) {
+                var fila = '<tr>';
+                fila = fila + '<td><b class="ui-table-cell-label">Nombre: </b><span>' + value.Nombre + '</span></td>';
+                fila = fila + '<td><b class="ui-table-cell-label">Valor: </b><span>' + value.Valor + '</span></td>';
+                fila = fila + '</tr>';
+
+                $("#detalles-adicionales tbody").append(fila);
+            });
+        }
+    }
+
+    function loadErroresXSD(data) {
+        $("#errores-xsd ul li").remove();
+        if (data) {
+            $.each(data, function (index, value) {
+                var fila = '<li>' + value.Message + '</li>';
+                $("#errores-xsd ul").append(fila);
+            });
+        }
+    }
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+﻿html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {margin:0; padding:0; border:0; outline:0; font-size:100%; vertical-align:baseline; background:transparent;}
+body {line-height:1;}
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section {display:block;}
+nav ul {list-style:none;}
+blockquote, q {quotes:none;}
+blockquote:before, blockquote:after,
+q:before, q:after {content:''; content:none;}
+a{margin:0; padding:0; font-size:100%; vertical-align:baseline; background:transparent;}
+/* change colours to suit your needs */
+ins {background-color:#ff9; color:#000; text-decoration:none;}
+mark {background-color:#ff9; color:#000; font-style:italic; font-weight:bold;}
+del {text-decoration: line-through;}
+abbr[title], dfn[title] {border-bottom:1px dotted; cursor:help;}
+table {border-collapse:collapse;border-spacing:0;}
+/* change border colour to suit your needs */
+hr {display:block; height:1px; border:0; border-top:1px solid #cccccc; margin:1em 0; padding:0;}
+input, select {vertical-align:middle;}
+
+/*Site CSS*/
+h1.ui-title{font-size:22px !important;}
+p.subtitulo{font-size:12px; margin-bottom:12px; text-align:center; color:#85DCF7; margin-top:-12px;}
+div.campos h2{display:block; margin-bottom:4px; color:#007CB2;}
+div.campos h3{border-bottom: 1px solid #C1C1C1; display: block; font-size: 20px; margin-bottom: 12px; padding-bottom: 7px; padding-top: 4px; text-transform:uppercase;}
+div.campos h4{display:block; margin-bottom:5px; font-size:13px; line-height:15px;}
+div.campos h4 strong {color:#007CB2; font-weight:bold;}
+div.campos h4 span, div.campos h2 span{font-weight:normal; word-wrap:break-word;}
+div.campos h2 span{color:Black;}
+#subirArchivo{display:none;}
+#subirArchivo div.k-upload div.k-dropzone div.k-upload-button {border-radius: 4px 4px 4px 4px; width:100%;}
+#xmlFile{cursor:pointer;}
+#error-container h2, #errores-xsd h2 {display:block; margin-bottom:15px;}
+#error-container p {display:block; color: Red;}
+div.documento-container h2{font-size:26px; line-height:28px; margin-bottom:5px;}
+div.campos{margin-bottom:15px;}
+div.subtotales {display:block; margin-top:12px;}
+div.subtotales h4 {padding-top:6px; padding-bottom:6px; padding-left:5px; border-bottom: 1px solid #B5B5B5;}
+#errores-xsd {padding:8px; background-color:#FCE1B1; color: #F44F1D; word-wrap: break-word;}
+#errores-xsd ul, #errores-xsd ul li {margin-left:20px; margin-bottom:6px;}
+tbody tr{border-bottom: 1px solid #B5B5B5;}
+table.ui-responsive thead tr th, table.ui-responsive tbody tr td{font-size:12px;}
+table.ui-responsive tbody tr:nth-child(even) td, table.ui-responsive thead tr th {background-color:#E2E2E2;}
+table.ui-responsive thead tr th {font-size:13px;}
+.ui-header .ui-title {margin: 0.6em 5% 0.8em;}
+div.ui-li span.ui-icon {background-image:url('/Content/themes/redmond/images/icons-18-white.png'); background-position: -109px -2px;}
+.ui-table-reflow.ui-responsive {display: table;}
+div#panel-acerca h2{margin-bottom:20px; text-align:center; color:#75F4E5; font-size:20px; line-height:26px;}
+div#panel-acerca p{margin-bottom:20px; font-size:14px; line-height:18px;}
+div#panel-acerca ul {margin-bottom:40px;}
+div#panel-acerca ul li {margin-left:20px; font-size:14px; line-height:18px; color:#75F4E5;}
+span.ui-btn-inner span.ui-icon-close {background-image:url('/Content/themes/redmond/images/icons-18-white.png'); background-position: -73px -2px; width:17px;}
+.centrado{text-align:center;}
+div#inicio{margin:auto; width:440px;}
+div#logo{padding:20px;}
+div#logo h5{font-size:11px; margin-top:5px; color:#706B6B;}
+div#logos-documentos table{width:100%;}
+div#logos-documentos table tr{border-bottom: none;}
+div#logos-documentos table tr td {text-align:center; vertical-align:middle; padding:10px;}
+div#logos-documentos table tr td strong{display:block; margin-top:4px; margin-bottom:4px; font-size:13px;}
+div#logo h2 {display:block; margin-top:15px;}
+@media only screen and (min-width: 0px) and (max-width: 560px) {
+    .ui-table th, .ui-table td {line-height: 1.5em; padding: 2px 0px; text-align: left; vertical-align: top;}
+    div#inicio{width:280px;}
+    div#logos-documentos table tr td {padding:5px;}
+}
+@media only screen and (min-height: 0px) and (max-height: 560px) {
+    div#logo img, div#logo h2{display:none;}
+    div#logo{padding:0px;}
+    div#logo h5{margin-bottom:8px; font-size:12px;}
+    div#logos-documentos table tr td{padding:6px;}
+    h1.ui-title{font-size:18px !important;}
+    p.subtitulo{font-size:11px;}
+    div.ui-content{padding:8px;}
+    div.documento-container h2{font-size:20px; line-height:22px;}
+    div.campos h3{font-size:16px; margin-bottom:8px; padding-bottom:4px;}
+    div#errores-xsd h2{font-size: 16px; line-height: 18px;}
+    #errores-xsd ul, #errores-xsd ul li {margin-left: 8px; margin-bottom: 6px; font-size: 14px;}
+    div.campos {margin-bottom: 8px;}
+}
+.hidden{display: none;}
