@@ -29,7 +29,8 @@
         following tag to your config.xml; you will still have the INTERNET
         permission on your app, which PhoneGap requires.
     -->
-	<gap:plugin name="org.apache.cordova.core.file" />
+	<plugin name="File" value="org.apache.cordova.FileUtils" />
+	<plugin name="FileTransfer" value="org.apache.cordova.FileTransfer" />
 	
     <preference name="permissions"                value="none"/>
 
