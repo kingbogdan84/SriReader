@@ -547,10 +547,65 @@
 
     var indexVM = new IndexViewModel();
 	
-	$("#xmlFile").change(function(){
-		var uploadElement = document.getElementById("xmlFile");
-		cargarArchivo(uploadElement);
-	});
+	document.addEventListener("deviceready", inciarApp, false);
+	
+	function iniciarApp(){
+		$("#btnAbrir").click(function () {
+			$("#xmlFile").trigger("click");
+		});
+		
+		$("#xmlFile").change(function(){
+			var uploadElement = document.getElementById("xmlFile");
+			cargarArchivo(uploadElement);
+		});
+		
+		$("#btnInicio").click(function () {
+			indexVM.EsFactura(false);
+			indexVM.EsGuiaRemision(false);
+			indexVM.EsNotaCredito(false);
+			indexVM.EsNotaDebito(false);
+			indexVM.EsRetencion(false);
+			indexVM.TieneCamposAdicionales(false);
+			indexVM.TieneErroresValidacion(false);
+			indexVM.EsValido(true);
+			$("#inicio").show();
+		});
+		
+		$.ajax({
+		  dataType: "json",
+		  crossDomain: true,
+		  url: "http://localhost:51268/Home/CargaInicial",
+		  success: function(data){
+			if (data){
+				indexVM.EsValido = ko.observable(data.EsValido);
+				indexVM.EsFactura = ko.observable(data.EsFactura);
+				indexVM.EsGuiaRemision = ko.observable(data.EsGuiaRemision);
+				indexVM.EsNotaCredito = ko.observable(data.EsNotaCredito);
+				indexVM.EsNotaDebito = ko.observable(data.EsNotaDebito);
+				indexVM.EsRetencion = ko.observable(data.EsRetencion);
+				indexVM.Mensaje = ko.observable(data.Mensaje);
+				indexVM.TieneErroresValidacion = ko.observable(data.TieneErroresValidacion);
+				indexVM.TieneCamposAdicionales = ko.observable(data.TieneCamposAdicionales);
+
+				indexVM.DocFactura = ko.mapping.fromJS(data.DocFactura);
+				indexVM.DocGuiaRemision = ko.mapping.fromJS(data.DocGuiaRemision);
+				indexVM.DocNotaCredito = ko.mapping.fromJS(data.DocNotaCredito);
+				indexVM.DocNotaDebito = ko.mapping.fromJS(data.DocNotaDebito);
+				indexVM.DocRetencion = ko.mapping.fromJS(data.DocRetencion);
+				indexVM.DocAutorizacion = ko.mapping.fromJS(data.DocAutorizacion);
+				indexVM.ErroresValidacion = ko.mapping.fromJS(data.ErroresValidacion);
+				indexVM.CamposAdicionales = ko.mapping.fromJS(data.CamposAdicionales);
+
+				ko.applyBindings(indexVM);
+			}
+		  },
+		  error: function(jqXHR, textStatus, ex) {
+			alert(textStatus + "," + ex + "," + jqXHR.responseText);
+		  }
+		});
+		
+		
+	}
 	
 	function cargarArchivo(uploadElement) {
 		var file = uploadElement.files[0];
@@ -628,59 +683,6 @@
 		}
 	}
 	
-    $(document).ready(function () {
-		
-		$.ajax({
-		  dataType: "json",
-		  crossDomain: true,
-		  url: "http://localhost:51268/Home/CargaInicial",
-		  success: function(data){
-			if (data){
-				indexVM.EsValido = ko.observable(data.EsValido);
-				indexVM.EsFactura = ko.observable(data.EsFactura);
-				indexVM.EsGuiaRemision = ko.observable(data.EsGuiaRemision);
-				indexVM.EsNotaCredito = ko.observable(data.EsNotaCredito);
-				indexVM.EsNotaDebito = ko.observable(data.EsNotaDebito);
-				indexVM.EsRetencion = ko.observable(data.EsRetencion);
-				indexVM.Mensaje = ko.observable(data.Mensaje);
-				indexVM.TieneErroresValidacion = ko.observable(data.TieneErroresValidacion);
-				indexVM.TieneCamposAdicionales = ko.observable(data.TieneCamposAdicionales);
-
-				indexVM.DocFactura = ko.mapping.fromJS(data.DocFactura);
-				indexVM.DocGuiaRemision = ko.mapping.fromJS(data.DocGuiaRemision);
-				indexVM.DocNotaCredito = ko.mapping.fromJS(data.DocNotaCredito);
-				indexVM.DocNotaDebito = ko.mapping.fromJS(data.DocNotaDebito);
-				indexVM.DocRetencion = ko.mapping.fromJS(data.DocRetencion);
-				indexVM.DocAutorizacion = ko.mapping.fromJS(data.DocAutorizacion);
-				indexVM.ErroresValidacion = ko.mapping.fromJS(data.ErroresValidacion);
-				indexVM.CamposAdicionales = ko.mapping.fromJS(data.CamposAdicionales);
-
-				ko.applyBindings(indexVM);
-			}
-		  },
-		  error: function(jqXHR, textStatus, ex) {
-			alert(textStatus + "," + ex + "," + jqXHR.responseText);
-		  }
-		});
-	
-    });
-
-    $("#btnAbrir").click(function () {
-        $("#xmlFile").trigger("click");
-    });
-
-    $("#btnInicio").click(function () {
-        indexVM.EsFactura(false);
-        indexVM.EsGuiaRemision(false);
-        indexVM.EsNotaCredito(false);
-        indexVM.EsNotaDebito(false);
-        indexVM.EsRetencion(false);
-        indexVM.TieneCamposAdicionales(false);
-        indexVM.TieneErroresValidacion(false);
-        indexVM.EsValido(true);
-        $("#inicio").show();
-    });
-
     function loadDestinatariosGuia(data) {
         $("#guia-destinatarios-lista li").remove();
         if (data) {
