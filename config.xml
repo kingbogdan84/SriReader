@@ -31,6 +31,7 @@
     -->
 	<plugin name="File" value="org.apache.cordova.FileUtils" />
 	<plugin name="FileTransfer" value="org.apache.cordova.FileTransfer" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	
     <preference name="permissions"                value="none"/>
 
